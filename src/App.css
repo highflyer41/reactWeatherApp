@@ -36,3 +36,215 @@
     transform: rotate(360deg);
   }
 }
+
+
+/* custom styles start here */
+@import url(https://fonts.googleapis.com/css?family=Montserrat:700);
+/* cyrillic-ext */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gTD_u50.woff2) format('woff2');
+  unicode-range: U+0460-052F, U+1C80-1C88, U+20B4, U+2DE0-2DFF, U+A640-A69F, U+FE2E-FE2F;
+}
+/* cyrillic */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3g3D_u50.woff2) format('woff2');
+  unicode-range: U+0400-045F, U+0490-0491, U+04B0-04B1, U+2116;
+}
+/* vietnamese */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gbD_u50.woff2) format('woff2');
+  unicode-range: U+0102-0103, U+0110-0111, U+0128-0129, U+0168-0169, U+01A0-01A1, U+01AF-01B0, U+1EA0-1EF9, U+20AB;
+}
+/* latin-ext */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gfD_u50.woff2) format('woff2');
+  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+/* latin */
+@font-face {
+  font-family: 'Montserrat';
+  font-style: normal;
+  font-weight: 700;
+  src: local('Montserrat Bold'), local('Montserrat-Bold'), url(https://fonts.gstatic.com/s/montserrat/v14/JTURjIg1_i6t8kCHKm45_dJE3gnD_g.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+    font-family: 'Montserrat';
+    src: local('Montserrat'), url(./fonts/Montserrat-Bold.ttf) format('woff2');
+  }
+/* basic html,body adjustments and fonts */
+html, body {
+    width: 100%;
+    height: auto;
+}
+body {
+    font-family: 'Montserrat','Helvetica Neue',Arial,sans-serif;
+    color: #001A33;
+    -webkit-tap-highlight-color: #222;
+    top:0;
+}
+
+/* positioning for main content divs */
+.main {
+    padding: 3em 0;
+    z-index: 20;
+    text-align: center;
+}
+.main h1 {
+    color: #14ef89d4;
+    font-size: 50px;
+    font-weight: 500;
+}
+.main h4 {
+    padding-bottom: 0.75em;
+    color: white;
+}
+.main h5 {
+    display: inline;
+    color: white;
+}
+
+.main2 {
+    z-index: 20;
+    text-align: center;
+}
+.main2 span {
+    color: #14ef89d4;
+    text-decoration: underline;
+}
+.main2 img {
+    width: 35%;
+    max-width: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#inputbtn, .homebtn{
+    background-color: #86377b;
+    color: white;
+}
+#threeDayForcast {
+    text-decoration: none;
+    background-color: #86377b;
+    display: none;
+}
+#threeDayForcast a, .homebtn a {
+    color: white;
+}
+.homebtn {
+    margin-top: 2em;
+}
+
+#citybox {
+    text-align: center;
+    padding-bottom: 2em;
+}
+
+.page1 {
+    height: 100vh;
+}
+#page2 {
+    margin-top: 10em;
+    margin-bottom: 5em;
+    display: none;
+}
+
+/* override default bootstrap class */
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+.card-body {
+    background-color: #bf9bbb;
+}
+
+footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+/* background wave animations */
+@keyframes move_wave {
+    0% {
+        transform: translateX(0) translateZ(0) scaleY(1)
+    }
+    50% {
+        transform: translateX(-25%) translateZ(0) scaleY(0.55)
+    }
+    100% {
+        transform: translateX(-50%) translateZ(0) scaleY(1)
+    }
+}
+.waveWrapper {
+    overflow: hidden;
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    margin: auto;
+}
+.waveWrapperInner {
+    position: absolute;
+    width: 100%;
+    overflow: hidden;
+    height: 100%;
+    bottom: -1px;
+    background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+    background-size: cover;
+}
+.bgTop {
+    z-index: 15;
+    opacity: 0.5;
+}
+.bgMiddle {
+    z-index: 10;
+    opacity: 0.75;
+}
+.bgBottom {
+    z-index: 5;
+}
+.wave {
+    position: absolute;
+    left: 0;
+    width: 200%;
+    height: 100%;
+    background-repeat: repeat no-repeat;
+    background-position: 0 bottom;
+    transform-origin: center bottom;
+    background-size: cover;
+}
+.waveTop {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveTop {
+  animation: move-wave 3s;
+   -webkit-animation: move-wave 3s;
+   -webkit-animation-delay: 1s;
+   animation-delay: 1s;
+}
+.waveMiddle {
+    background-size: 50% 120px;
+}
+.waveAnimation .waveMiddle {
+    animation: move_wave 10s linear infinite;
+}
+.waveBottom {
+    background-size: 50% 100px;
+}
+.waveAnimation .waveBottom {
+    animation: move_wave 15s linear infinite;
+}
