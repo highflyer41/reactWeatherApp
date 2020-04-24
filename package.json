@@ -15,7 +15,7 @@
     "react-scripts": "3.4.1",
     "zipcode-to-timezone": "0.0.9"
   },
-  "homepage": "https://github.com/highflyer41/reactWeatherApp",
+  "homepage": "https://highflyer41.github.io/reactWeatherApp",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
