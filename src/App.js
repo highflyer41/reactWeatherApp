@@ -2,11 +2,11 @@ import React, {Component} from 'react';
 import './App.css';
 import Moment from 'moment';
 import 'moment-timezone';
-import zipTz from 'zipcode-to-timezone';
 
 class App extends Component {
   state = { 
     zipcode: '',
+    timezone: '',
     lat: 0,
     long: 0,
     country: '',
@@ -14,7 +14,18 @@ class App extends Component {
     city: '',
     description: '',
     weather: '',
-    show: false
+    show: false,
+    dayOneDate: '',
+    dayOneWeather: '',
+    dayOneTemp: 0,
+    dayTwoDate: '',
+    dayTwoWeather: '',
+    dayTwoTemp: 0,
+    dayThreeDate: '',
+    dayThreeWeather: '',
+    dayThreeTemp: 0,
+    showTwo: false,
+    errMessage: '',
    }
 
    handleClick = () => {
@@ -26,8 +37,6 @@ class App extends Component {
     });
      setTimeout(() => {
         this.getWeather();
-        this.getTime();
-        this.setState({show: true});
      }, 200);
    }
 
@@ -43,6 +52,10 @@ class App extends Component {
     fetch("https://api.openweathermap.org/data/2.5/weather?zip="+zipcode+","+country+"&APPID=36de89dd9ba1aaa422fa4d99ab092bef&units=imperial")
     .then((response) => {
       if(!response.ok){
+        this.setState({
+          show: false,
+          showTwo: true,
+        })
         throw new Error("Invalid Zip Code");
       }
       return response.json();
@@ -52,11 +65,16 @@ class App extends Component {
       this.setState({
         temp: data.main.temp,
         city: data.name,
-        lat: data.lat,
-        long: data.lng,
+        lat: data.coord.lat,
+        long: data.coord.lon,
         description: data.weather[0].description,
         weather: data.weather[0].main
       })
+        this.setState({
+          show: true,
+          showTwo: false,
+        });
+        this.getMoreWeather(this.state.lat, this.state.long);
     })
     .catch((err) => {
       console.log(err);
@@ -64,33 +82,55 @@ class App extends Component {
   }
 
   getMoreWeather = (lati, longi) => {
-
+    fetch("https://api.openweathermap.org/data/2.5/onecall?lat="+lati+"&lon="+longi+"&units=imperial&appid=36de89dd9ba1aaa422fa4d99ab092bef")
+    .then((response) => { return response.json()})
+    .then((response) => {
+      console.log(response);
+      this.setState({
+        timezone: response.timezone,
+        dayOneWeather: response.daily[1].weather[0].main,
+        dayOneTemp: response.daily[1].temp.day,
+        dayTwoWeather: response.daily[2].weather[0].main,
+        dayTwoTemp: response.daily[2].temp.day,
+        dayThreeWeather: response.daily[3].weather[0].main,
+        dayThreeTemp: response.daily[3].temp.day,
+      })
+      this.getTime();
+    })
   }
 
   getTime = () => {
     let moment = Moment();
-    let zone = zipTz.lookup(this.state.zipcode);
+    let zone = this.state.timezone;
     let currentTime = moment.tz(zone).format('dddd, MMMM Do YYYY, h:mm:ss a');
+    let day1 = moment.tz(zone).add(1, 'd').format('dddd, MMMM Do YYYY');
+    let day2 = moment.tz(zone).add(1, 'd').format('dddd, MMMM Do YYYY');
+    let day3 = moment.tz(zone).add(1, 'd').format('dddd, MMMM Do YYYY');
     //console.log(zone);
-    this.setState({time: currentTime});
+    this.setState({
+      time: currentTime,
+      dayOneDate: day1,
+      dayTwoDate: day2,
+      dayThreeDate: day3,
+    });
   }
 
   getWeatherPic = (param) => {
     switch(param) {
       case "Clear": 
-           return <img src='https://media.giphy.com/media/QZz9r30N2RM7DFIXqE/source.gif' alt=''/>
+           return <img className='img-fluid' src='https://media.giphy.com/media/QZz9r30N2RM7DFIXqE/source.gif' alt=''/>
       case "Thunderstorm": 
-          return <img src='https://media.giphy.com/media/xUOwGoNa2uX6M170d2/source.gif' alt=''/>
+          return <img className='img-fluid' src='https://media.giphy.com/media/xUOwGoNa2uX6M170d2/source.gif' alt=''/>
       case "Drizzle":
       case "Rain":
-          return <img src='https://media.giphy.com/media/U7yxnzr21Xhnnb7Zxz/source.gif' alt=''/>
+          return <img className='img-fluid' src='https://media.giphy.com/media/U7yxnzr21Xhnnb7Zxz/source.gif' alt=''/>
       case "Snow":
-          return <img src='https://media.giphy.com/media/6YNgoTEPs6vZe/source.gif'alt=''/>
+          return <img className='img-fluid' src='https://media.giphy.com/media/6YNgoTEPs6vZe/source.gif'alt=''/>
       case "Clouds":
-          return <img src='https://media.giphy.com/media/Ke7i5t6QDmDSO82Uga/source.gif'alt=''/>
+          return <img className='img-fluid' src='https://media.giphy.com/media/Ke7i5t6QDmDSO82Uga/source.gif'alt=''/>
       default:
-          return <img src='https://media.giphy.com/media/xUOxfjsW9fWPqEWouI/source.gif'alt=''/>
-  }
+          return <img className='img-fluid' src='https://media.giphy.com/media/xUOxfjsW9fWPqEWouI/source.gif'alt=''/>
+    }
   }
 
   render() { 
@@ -120,7 +160,7 @@ class App extends Component {
         <input type="text" name="input" id={"input"} placeholder="zip code: ex. 12345" onKeyUp={(e) => {this.handlePress(e)}}/>
         <input type="text" id={"inputCountry"} defaultValue="us" placeholder="Country Alpha-2 Code" onKeyUp={(e) => {this.handlePress(e)}}/>
         <button id="inputbtn" onClick={() => {this.handleClick()}}>Submit</button>
-        <button id="threeDayForcast"><a href="#page2">Three Day Forecast</a></button>
+        <button id="threeDayForcast" style={{display: (this.state.show ? 'inline-block':'none')}}><a href="#page2">Three Day Forecast</a></button>
       </div></div>
       <div className="row">
         <div className="col-sm-12 col-md-12 col-xs-12 main2">
@@ -131,33 +171,42 @@ class App extends Component {
               And a temperature of: <span>{this.state.temp} degrees Fahrenheit</span><br/>
               {this.getWeatherPic(this.state.weather)}
             </div>
+            <div style={{display: (this.state.showTwo ? 'block':'none')}}>
+              <h2>Invalid Zip Code. Try again!</h2>
+            </div>
         </div>
       </div></div>
 
-      <div className="container" id="page2">
+      <div className="container" id="page2" style={{display: (this.state.show ? 'block':'none')}}>
         <div className="row">
-            <div className="col-sm-12 col-md-12 col-xs-12" id="citybox"> Three day forecast for
+            <div className="col-sm-12 col-md-12 col-xs-12" id="citybox"><h3>Three day forecast for {this.state.city}, {this.state.country}</h3>
             </div>
         </div>
     <div className="row">
         <div className="col-sm-12 col-md-12 col-xs-12">
             <div className="card-deck">
                 <div className="card" id="day1">
+                  {this.getWeatherPic(this.state.dayOneWeather)}
                     <div className="card-body">
-                            <h5 className="card-title" id="day1date">Date:</h5>
-                            <p className="card-text" id="day1weather">weather info</p>
+                        <h5 className="card-title" id="day1date">{this.state.dayOneDate}</h5>
+                        <p className="card-text" id="day1weather">Weather: {this.state.dayOneWeather}<br></br>
+                        Temperature: {this.state.dayOneTemp}</p>
                     </div>
                 </div>
                 <div className="card" id="day2">
+                {this.getWeatherPic(this.state.dayTwoWeather)}
                     <div className="card-body">
-                        <h5 className="card-title" id="day2date">Date:</h5>
-                        <p className="card-text" id="day2weather">weather info</p>
+                        <h5 className="card-title" id="day2date">{this.state.dayTwoDate}</h5>
+                        <p className="card-text" id="day2weather">Weather: {this.state.dayTwoWeather}<br></br>
+                        Temperature: {this.state.dayTwoTemp}</p>
                     </div>
                 </div>
                 <div className="card" id="day3">
+                {this.getWeatherPic(this.state.dayThreeWeather)}
                     <div className="card-body">
-                        <h5 className="card-title" id="day3date">Date:</h5>
-                        <p className="card-text" id="day3weather">weather info</p>
+                        <h5 className="card-title" id="day3date">{this.state.dayThreeDate}</h5>
+                        <p className="card-text" id="day3weather">Weather: {this.state.dayThreeWeather}<br></br>
+                        Temperature: {this.state.dayThreeTemp}</p>
                     </div>
                 </div>
               </div>
@@ -169,6 +218,8 @@ class App extends Component {
         </div>
     </div>
     </div>
+
+    <footer style={{position: (this.state.show ? 'static':'absolute')}}>© 2020 Meng Yang</footer>
       </div>
      );
   }
