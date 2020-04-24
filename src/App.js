@@ -26,6 +26,7 @@ class App extends Component {
     dayThreeTemp: 0,
     showTwo: false,
     errMessage: '',
+    iconUrl: '',
    }
 
    handleClick = () => {
@@ -88,6 +89,7 @@ class App extends Component {
       console.log(response);
       this.setState({
         timezone: response.timezone,
+        iconUrl: "http://openweathermap.org/img/wn/"+response.current.weather[0].icon+"@2x.png",
         dayOneWeather: response.daily[1].weather[0].main,
         dayOneTemp: response.daily[1].temp.day,
         dayTwoWeather: response.daily[2].weather[0].main,
@@ -133,6 +135,17 @@ class App extends Component {
     }
   }
 
+  getMap = (lati, longi) => {
+    let url = "https://www.google.com/maps/embed/v1/place?key=AIzaSyCrG6kFec63ZBGK-h-cfowgrwRzBM1Rjto&q="+lati+","+longi+"&zoom=10";
+
+    return (
+      <iframe title="map"
+        frameborder="0" style={{border :0, width:"100%", height:"100%"}}
+        src = {url}>
+      </iframe>
+    )
+  }
+
   render() { 
     return ( 
       <div>
@@ -163,19 +176,26 @@ class App extends Component {
         <button id="threeDayForcast" style={{display: (this.state.show ? 'inline-block':'none')}}><a href="#page2">Three Day Forecast</a></button>
       </div></div>
       <div className="row">
-        <div className="col-sm-12 col-md-12 col-xs-12 main2">
-            <div id="datebox" style={{display: (this.state.show ? 'block':'none')}}>
+        <div className="col-sm-5 col-md-5 col-xs-5 main2">
+            <div style={{display: (this.state.show ? 'inline-block':'none'), width: '100%', height: '100%'}}>
+              {this.getMap(this.state.lat, this.state.long)}
+            </div></div>
+            <div className="col-sm-7 col-md-7 col-xs-7 main2">
+            <div id="datebox" style={{display: (this.state.show ? 'inline-block':'none')}}>
               City: <span>{this.state.city}, {this.state.country}, {this.state.zipcode}</span><br/>
               Local date and time is: <span>{this.state.time}</span><br/>
-              Weather: <span>{this.state.weather} with {this.state.description}</span><br/>
+              Weather: <span>{this.state.weather} with {this.state.description}</span><img src={this.state.iconUrl} alt='' style={{width: '30px'}}/><br/>
               And a temperature of: <span>{this.state.temp} degrees Fahrenheit</span><br/>
               {this.getWeatherPic(this.state.weather)}
             </div>
+        </div>
+      </div>
+        <div className='row' style={{justifyContent: 'center'}}>
             <div style={{display: (this.state.showTwo ? 'block':'none')}}>
               <h2>Invalid Zip Code. Try again!</h2>
             </div>
         </div>
-      </div></div>
+      </div>
 
       <div className="container" id="page2" style={{display: (this.state.show ? 'block':'none')}}>
         <div className="row">
