@@ -29,16 +29,33 @@ class App extends Component {
     iconUrl: '',
    }
 
+   isEmpty = (zipIn, countryIn) => {
+     if(zipIn === ''){
+        alert('Enter a zip code!');
+        return true;
+     }
+     if(countryIn === ''){
+       alert('Enter a country code!');
+       return true;
+     }
+   }
+
    handleClick = () => {
      let zip = document.getElementById('input').value;
      let cntry = document.getElementById('inputCountry').value;
-     this.setState({
-       zipcode: zip,
-       country: cntry.toUpperCase(),
-    });
-     setTimeout(() => {
+     
+     if(this.isEmpty(zip, cntry)){
+      return;
+     } else {
+      this.setState({
+        zipcode: zip,
+        country: cntry.toUpperCase(),
+      });
+      setTimeout(() => {
         this.getWeather();
-     }, 200);
+        document.getElementById('inputbtn').focus();
+      }, 200);
+     }
    }
 
    handlePress = (key) => {
@@ -172,7 +189,7 @@ class App extends Component {
         <h4>Check the weather and time by zip code</h4>
         <input type="text" name="input" id={"input"} placeholder="zip code: ex. 12345" onKeyUp={(e) => {this.handlePress(e)}}/>
         <input type="text" id={"inputCountry"} defaultValue="us" placeholder="Country Alpha-2 Code" onKeyUp={(e) => {this.handlePress(e)}}/>
-        <button id="inputbtn" onClick={() => {this.handleClick()}}>Submit</button>
+        <button id={"inputbtn"} onClick={() => {this.handleClick()}}>Submit</button>
         <button id="threeDayForcast" style={{display: (this.state.show ? 'inline-block':'none')}}><a href="#page2">Three Day Forecast</a></button>
       </div></div>
       <div className="row">
