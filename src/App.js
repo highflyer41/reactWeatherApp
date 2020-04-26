@@ -53,7 +53,7 @@ class App extends Component {
       });
       setTimeout(() => {
         this.getWeather();
-        document.getElementById('inputbtn').focus();
+        document.getElementById('input').blur();
       }, 200);
      }
    }
