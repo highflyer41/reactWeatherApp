@@ -84,6 +84,11 @@ body {
     margin-right: auto;
 }
 
+a:hover {
+    text-decoration: none !important;
+    color: white !important;
+}
+
 #inputbtn, .homebtn{
     background-color: #86377b;
     color: white;

@@ -86,12 +86,10 @@ class App extends Component {
         lat: data.coord.lat,
         long: data.coord.lon,
         description: data.weather[0].description,
-        weather: data.weather[0].main
-      })
-        this.setState({
-          show: true,
-          showTwo: false,
-        });
+        weather: data.weather[0].main,
+        show: true,
+        showTwo: false,
+      });
         this.getMoreWeather(this.state.lat, this.state.long);
     })
     .catch((err) => {
