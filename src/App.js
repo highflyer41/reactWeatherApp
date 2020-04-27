@@ -200,7 +200,7 @@ class App extends Component {
               City: <span>{this.state.city}, {this.state.country}, {this.state.zipcode}</span><br/>
               Local date and time is: <span>{this.state.time}</span><br/>
               Weather: <span>{this.state.weather} with {this.state.description}</span><img src={this.state.iconUrl} alt='' style={{width: '30px'}}/><br/>
-              And a temperature of: <span>{this.state.temp} degrees Fahrenheit</span><br/>
+              And a temperature of: <span>{this.state.temp} °F</span><br/>
               {this.getWeatherPic(this.state.weather)}
             </div>
         </div>
@@ -225,7 +225,7 @@ class App extends Component {
                     <div className="card-body">
                         <h5 className="card-title" id="day1date">{this.state.dayOneDate}</h5>
                         <p className="card-text" id="day1weather">Weather: {this.state.dayOneWeather}<br></br>
-                        Temperature: {this.state.dayOneTemp}</p>
+                        Temperature: {this.state.dayOneTemp} °F</p>
                     </div>
                 </div>
                 <div className="card" id="day2">
@@ -233,7 +233,7 @@ class App extends Component {
                     <div className="card-body">
                         <h5 className="card-title" id="day2date">{this.state.dayTwoDate}</h5>
                         <p className="card-text" id="day2weather">Weather: {this.state.dayTwoWeather}<br></br>
-                        Temperature: {this.state.dayTwoTemp}</p>
+                        Temperature: {this.state.dayTwoTemp} °F</p>
                     </div>
                 </div>
                 <div className="card" id="day3">
@@ -241,7 +241,7 @@ class App extends Component {
                     <div className="card-body">
                         <h5 className="card-title" id="day3date">{this.state.dayThreeDate}</h5>
                         <p className="card-text" id="day3weather">Weather: {this.state.dayThreeWeather}<br></br>
-                        Temperature: {this.state.dayThreeTemp}</p>
+                        Temperature: {this.state.dayThreeTemp} °F</p>
                     </div>
                 </div>
               </div>
