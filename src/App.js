@@ -2,6 +2,12 @@ import React, {Component} from 'react';
 import './App.css';
 import Moment from 'moment';
 import 'moment-timezone';
+import Background from './background';
+import WeatherCard from './weatherCard';
+import TopButton from './topButton';
+import Footer from './footer';
+import ErrorMessage from './errorMessage';
+import WeatherInfo from './weatherInfo';
 
 class App extends Component {
   state = { 
@@ -101,7 +107,7 @@ class App extends Component {
     fetch("https://api.openweathermap.org/data/2.5/onecall?lat="+lati+"&lon="+longi+"&units=imperial&appid=36de89dd9ba1aaa422fa4d99ab092bef")
     .then((response) => { return response.json()})
     .then((response) => {
-      console.log(response);
+      //console.log(response);
       this.setState({
         timezone: response.timezone,
         iconUrl: "http://openweathermap.org/img/wn/"+response.current.weather[0].icon+"@2x.png",
@@ -164,21 +170,7 @@ class App extends Component {
   render() { 
     return ( 
       <div>
-      <div className="waveWrapper waveAnimation">
-        <div className="waveWrapperInner bgTop">
-          <div className="wave waveTop" style={{backgroundImage: "url('https://front-end-noobs.com/jecko/img/wave-top.png')"}}>
-            <div className="header-content">
-                <div className="inner">
-            </div></div>
-        <div className="waveWrapperInner bgMiddle">
-            <div className="wave waveMiddle" style={{backgroundImage: "url('https://front-end-noobs.com/jecko/img/wave-mid.png')"}}></div>
-          </div>
-          <div className="waveWrapperInner bgBottom">
-            <div className="wave waveBottom" style={{backgroundImage: "url('https://front-end-noobs.com/jecko/img/wave-bot.png')"}}></div>
-          </div>
-        </div>
-    </div>
-    </div>
+      <Background/>
 
     <div className="container page1" id="top">
       <div className="row">
@@ -197,18 +189,18 @@ class App extends Component {
             </div></div>
             <div className="col-sm-7 col-md-7 col-xs-7 main2">
             <div id="datebox" style={{display: (this.state.show ? 'inline-block':'none')}}>
-              City: <span>{this.state.city}, {this.state.country}, {this.state.zipcode}</span><br/>
-              Local date and time is: <span>{this.state.time}</span><br/>
-              Weather: <span>{this.state.weather} with {this.state.description}</span><img src={this.state.iconUrl} alt='' style={{width: '30px'}}/><br/>
-              And a temperature of: <span>{this.state.temp} °F</span><br/>
-              {this.getWeatherPic(this.state.weather)}
+              <WeatherInfo city={this.state.city} 
+              country={this.state.country} 
+              zipcode={this.state.zipcode} time={this.state.time} 
+              weather={this.state.weather} 
+              description={this.state.description} 
+              iconUrl={this.state.iconUrl} temp={this.state.temp} 
+              weatherPic={this.getWeatherPic(this.state.weather)} />
             </div>
         </div>
       </div>
         <div className='row' style={{justifyContent: 'center'}}>
-            <div style={{display: (this.state.showTwo ? 'block':'none')}}>
-              <h2>Invalid Zip Code. Try again!</h2>
-            </div>
+            <ErrorMessage showTwo={this.state.showTwo} />
         </div>
       </div>
 
@@ -220,45 +212,27 @@ class App extends Component {
     <div className="row">
         <div className="col-sm-12 col-md-12 col-xs-12">
             <div className="card-deck">
-                <div className="card" id="day1">
-                  {this.getWeatherPic(this.state.dayOneWeather)}
-                    <div className="card-body">
-                        <h5 className="card-title" id="day1date">{this.state.dayOneDate}</h5>
-                        <p className="card-text" id="day1weather">Weather: {this.state.dayOneWeather}<br></br>
-                        Temperature: {this.state.dayOneTemp} °F</p>
-                    </div>
-                </div>
-                <div className="card" id="day2">
-                {this.getWeatherPic(this.state.dayTwoWeather)}
-                    <div className="card-body">
-                        <h5 className="card-title" id="day2date">{this.state.dayTwoDate}</h5>
-                        <p className="card-text" id="day2weather">Weather: {this.state.dayTwoWeather}<br></br>
-                        Temperature: {this.state.dayTwoTemp} °F</p>
-                    </div>
-                </div>
-                <div className="card" id="day3">
-                {this.getWeatherPic(this.state.dayThreeWeather)}
-                    <div className="card-body">
-                        <h5 className="card-title" id="day3date">{this.state.dayThreeDate}</h5>
-                        <p className="card-text" id="day3weather">Weather: {this.state.dayThreeWeather}<br></br>
-                        Temperature: {this.state.dayThreeTemp} °F</p>
-                    </div>
-                </div>
-              </div>
+              <WeatherCard weatherPic={this.getWeatherPic(this.state.dayOneWeather)} dayDate={this.state.dayOneDate} 
+              dayWeather={this.state.dayOneWeather}
+              dayTemp={this.state.dayOneTemp} />
+              <WeatherCard weatherPic={this.getWeatherPic(this.state.dayTwoWeather)} dayDate={this.state.dayTwoDate} 
+              dayWeather={this.state.dayTwoWeather}
+              dayTemp={this.state.dayTwoTemp} />
+              <WeatherCard weatherPic={this.getWeatherPic(this.state.dayThreeWeather)} dayDate={this.state.dayThreeDate} 
+              dayWeather={this.state.dayThreeWeather}
+              dayTemp={this.state.dayThreeTemp} />
+            </div>
         </div>
     </div>
     <div className="row">
-        <div className="col-sm-12 col-md-12 col-xs-12">
-            <button className="homebtn"><a href="#top">Back to Top</a></button>
-        </div>
+        <TopButton/>
     </div>
     </div>
 
-    <footer style={{position: (this.state.show ? 'static':'absolute')}}>© 2020 Meng Yang</footer>
-      </div>
+    <Footer show={this.state.show} />
+    </div>
      );
   }
 }
- 
 
 export default App;
